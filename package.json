@@ -4,7 +4,6 @@
   "description": "Complete backend for Galerium with authentication, payments, and asset management.",
   "main": "src/server.js",
   "scripts": {
-    "build": "npx prisma generate",
     "start": "node src/server.js",
     "deploy": "npx prisma migrate deploy",
     "dev": "nodemon src/server.js",
@@ -15,7 +14,7 @@
     "db:push": "prisma db push",
     "db:reset": "prisma migrate reset --force",
     "db:studio": "prisma studio",
-    "postinstall": "prisma generate"
+    "postinstall": "npx prisma generate"
   },
   "keywords": [],
   "author": "",
