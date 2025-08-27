@@ -1,0 +1,38 @@
+{
+  "name": "galeriumauth",
+  "version": "1.0.0",
+  "description": "Complete backend for Galerium with authentication, payments, and asset management.",
+  "main": "src/server.js",
+  "scripts": {
+    "build": "npx prisma generate",
+    "start": "node src/server.js",
+    "deploy": "npx prisma migrate deploy",
+    "dev": "nodemon src/server.js",
+    "test": "node test-server.js",
+    "test:mp": "node test-mercadopago.js",
+    "test:payment": "node test-full-payment.js",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:reset": "prisma migrate reset --force",
+    "db:studio": "prisma studio",
+    "postinstall": "prisma generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.15.0",
+    "axios": "^1.11.0",
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mercadopago": "^2.0.10"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.2",
+    "prisma": "^5.15.0"
+  }
+}
