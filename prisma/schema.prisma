@@ -17,6 +17,7 @@ model User {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
+  // Relações
   subscriptions Subscription[]
   downloads     Download[]
   favorites     Favorite[]
@@ -27,19 +28,20 @@ model User {
 model Subscription {
   id                   String    @id @default(cuid())
   userId               String    @unique
-  planId               String
+  planId               String    // monthly, annual, premium
   planName             String
   status               String    // active, canceled, past_due, unpaid, trialing
   currentPeriodStart   DateTime
   currentPeriodEnd     DateTime
   cancelAtPeriodEnd    Boolean   @default(false)
   canceledAt           DateTime?
-  amount               Float
+  amount               Decimal   @db.Decimal(10, 2)
   mpPaymentId          String?
   mpSubscriptionId     String?
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
 
+  // Relação com User
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("subscriptions")
@@ -47,22 +49,26 @@ model Subscription {
 
 model Asset {
   id           String   @id @default(cuid())
-  title        String
-  description  String?
-  category     String
-  tags         String
-  thumbnailUrl String
-  downloadUrl  String
-  fileName     String?
-  fileSize     Int?
+  title        String   @db.VarChar(255)
+  description  String?  @db.Text
+  category     String   @db.VarChar(100)
+  tags         String[] // Array PostgreSQL nativo
+  thumbnailUrl String   @db.VarChar(500)
+  downloadUrl  String   @db.VarChar(500)
+  fileName     String?  @db.VarChar(255)
+  fileSize     BigInt?  // Para arquivos grandes
   downloads    Int      @default(0)
   isPremium    Boolean  @default(false)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  // Relações
   userDownloads Download[]
   favorites     Favorite[]
 
+  @@index([category])
+  @@index([isPremium])
+  @@index([createdAt])
   @@map("assets")
 }
 
@@ -72,10 +78,13 @@ model Download {
   assetId   String
   createdAt DateTime @default(now())
 
+  // Relações
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   asset Asset @relation(fields: [assetId], references: [id], onDelete: Cascade)
 
   @@unique([userId, assetId])
+  @@index([userId])
+  @@index([assetId])
   @@map("downloads")
 }
 
@@ -85,9 +94,12 @@ model Favorite {
   assetId   String
   createdAt DateTime @default(now())
 
+  // Relações
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   asset Asset @relation(fields: [assetId], references: [id], onDelete: Cascade)
 
   @@unique([userId, assetId])
+  @@index([userId])
+  @@index([assetId])
   @@map("favorites")
 }
