@@ -133,7 +133,7 @@ app.get('/health', async (req, res) => {
         timestamp: new Date().toISOString(),
         environment: process.env.NODE_ENV || 'development',
         version: '1.0.0',
-        port: process.env.PORT || 3001,
+        port: process.env.PORT || 3000,
         memory: {
             used: Math.round(process.memoryUsage().heapUsed / 1024 / 1024 * 100) / 100,
             total: Math.round(process.memoryUsage().heapTotal / 1024 / 1024 * 100) / 100,
@@ -549,9 +549,9 @@ app.use('*', (req, res) => {
     res.status(404).json({ error: 'Rota não encontrada' });
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Servidor rodando na porta ${PORT}`);
     console.log(`📊 Ambiente: ${process.env.NODE_ENV || 'development'}`);
     console.log(`🔗 URL: http://localhost:${PORT}`);
