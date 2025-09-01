@@ -30,11 +30,10 @@ if (process.env.MP_ACCESS_TOKEN) {
 
 // Middlewares otimizados para Railway
 app.use(cors({
-    origin: process.env.NODE_ENV === 'production' 
-        ? [process.env.FRONTEND_URL, process.env.BACKEND_URL].filter(Boolean)
-        : true,
+    origin: '*',
     credentials: true,
-    optionsSuccessStatus: 200
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json({ limit: '10mb' }));
@@ -549,14 +548,11 @@ app.use('*', (req, res) => {
     res.status(404).json({ error: 'Rota não encontrada' });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Servidor rodando na porta ${PORT}`);
-    console.log(`📊 Ambiente: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`🔗 URL: http://localhost:${PORT}`);
-    console.log(`💾 Banco: ${process.env.DATABASE_URL}`);
-    console.log(`💳 Mercado Pago: ${process.env.MP_ACCESS_TOKEN ? 'Configurado' : 'Não configurado'}`);
+    console.log(`🔗 URL: ${process.env.RAILWAY_PUBLIC_DOMAIN || 'http://localhost:' + PORT}`);
 });
 
 // Graceful shutdown
