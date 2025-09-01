@@ -30,7 +30,12 @@ if (process.env.MP_ACCESS_TOKEN) {
 
 // Middlewares otimizados para Railway
 app.use(cors({
-    origin: '*',
+    origin: [
+        'https://galleriumm.framer.website',
+        'https://*.framer.website',
+        'https://*.framer.app',
+        '*' // temporariamente para testar
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
